@@ -1,7 +1,6 @@
 import CircleComponent from "@/components/Half";
 import AnimatedWave from "@/components/Waves";
 import React from "react";
-import Home from "@/components/Wave";
 import RightideComponent from "@/components/RightSide";
 
 const Page = () => {
@@ -49,7 +48,6 @@ const Page = () => {
           </div>
         </div>
       </div>
-      <Home />
     </>
   );
 };

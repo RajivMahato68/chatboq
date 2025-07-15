@@ -207,7 +207,7 @@ const AnimatedWave: React.FC = () => {
     return () => {
       tl.kill();
     };
-  }, []);
+  });
 
   return (
     <div
@@ -376,21 +376,6 @@ const AnimatedWave: React.FC = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-500/10 to-transparent blur-xl"></div>
         <div className="absolute inset-0 bg-gradient-to-t from-transparent via-purple-400/5 to-transparent blur-2xl"></div>
       </div>
-
-      {/* <div className="absolute inset-0 pointer-events-none">
-        {[...Array(20)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute w-1 h-1 bg-orange-300 rounded-full opacity-30"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animation: `pulse ${2 + Math.random() * 2}s infinite alternate`,
-            }}
-          />
-        ))}
-      </div> */}
     </div>
   );
 };

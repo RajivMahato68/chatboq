@@ -414,7 +414,7 @@ const AnimatedRobotLogo: React.FC = () => {
         gl.getExtension("WEBGL_lose_context")?.loseContext();
       });
     };
-  }, []);
+  });
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-black overflow-hidden">
