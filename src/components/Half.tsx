@@ -124,7 +124,7 @@ export default function CircleComponent() {
   };
 
   return (
-    <div className="flex items-center justify-start min-h-screen bg-black text-white w-full">
+    <div className="flex items-center justify-start h-screen bg-black text-white w-full">
       <style>{style}</style>
       <div className="flex flex-col items-start">
         <div

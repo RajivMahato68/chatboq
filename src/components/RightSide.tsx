@@ -59,6 +59,7 @@ export default function RightideComponent() {
   const lastPauseEnd = useRef(0);
   const startTime = useRef(Date.now());
   const animationRef = useRef<number | null>(null);
+  const pausedCardIndex = useRef<number | null>(null);
 
   const [activeIndexes, setActiveIndexes] = useState<number[]>([]);
 
@@ -66,7 +67,7 @@ export default function RightideComponent() {
     const duration = 20000;
     const radius = 215;
     const pauseCooldown = 1000;
-    const pauseDuration = 3000; // ⏸️ Pause 3 seconds at center
+    const pauseDuration = 2000; // Pause for 2 seconds
 
     const animate = () => {
       const now = Date.now();
@@ -75,9 +76,12 @@ export default function RightideComponent() {
         const pauseTime = now - pauseStart.current;
         if (pauseTime >= pauseDuration) {
           isPaused.current = false;
+          pausedCardIndex.current = null;
           lastPauseEnd.current = now;
           startTime.current += pauseTime;
         } else {
+          // Show full content for all cards during pause
+          setActiveIndexes(userDetails.map((_, i) => i));
           animationRef.current = requestAnimationFrame(animate);
           return;
         }
@@ -100,23 +104,24 @@ export default function RightideComponent() {
         card.style.transform = `translate(${x}px, ${y}px)`;
 
         const angleMod = (angle + 360) % 360;
-        const isAtLeft = Math.abs(angleMod - 180) < 3;
-        const isAtRight = Math.abs(angleMod - 0) < 3;
-        const isActive = isAtLeft || isAtRight;
+
+        const isAtRight = Math.abs(angleMod - 0) < 2;
+        const isAtLeftRange = angleMod >= 180 && angleMod <= 180;
+        const isActive = isAtRight || isAtLeftRange;
 
         card.classList.toggle("paused-icon", isActive);
 
-        // ✅ Show content before pausing
         if (
           isActive &&
           !isPaused.current &&
           now - lastPauseEnd.current > pauseCooldown
         ) {
-          newActiveIndexes.push(index); // show immediately
+          newActiveIndexes.push(index);
           isPaused.current = true;
           pauseStart.current = now;
+          pausedCardIndex.current = index;
         } else if (isActive) {
-          newActiveIndexes.push(index); // keep showing if active
+          newActiveIndexes.push(index);
         }
       });
 
@@ -137,7 +142,7 @@ export default function RightideComponent() {
   return (
     <>
       <style>{style}</style>
-      <div className="flex items-center justify-center min-h-screen bg-black text-white">
+      <div className="flex items-center justify-center h-screen text-white">
         <div className="flex flex-col items-center">
           <div
             className="relative overflow-hidden"
@@ -148,7 +153,10 @@ export default function RightideComponent() {
               style={{ width: "600px", height: "600px" }}
             >
               {userDetails.map((user, index) => {
-                const isActive = activeIndexes.includes(index);
+                const isActive =
+                  isPaused.current ||
+                  activeIndexes.includes(index) ||
+                  pausedCardIndex.current === index;
 
                 return (
                   <div
@@ -162,7 +170,6 @@ export default function RightideComponent() {
                           <div className="bg-purple-300 text-black p-2 rounded-lg w-fit text-sm mb-1">
                             {user.message}
                           </div>
-
                           <div className="flex items-center gap-3">
                             <Image
                               width={50}
@@ -187,7 +194,6 @@ export default function RightideComponent() {
                               </div>
                             </div>
                           </div>
-
                           <div className="mt-2 bg-[#2c2c2c] text-green-400 text-sm px-4 py-1 rounded-full w-fit flex items-center gap-1">
                             <svg
                               className="w-4 h-4"

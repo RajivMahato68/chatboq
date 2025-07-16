@@ -417,7 +417,7 @@ const AnimatedRobotLogo: React.FC = () => {
   });
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-black overflow-hidden">
+    <div className="flex items-center justify-center h-screen bg-black overflow-hidden">
       <style jsx>{`
         .ring-container {
           position: absolute;
@@ -440,7 +440,7 @@ const AnimatedRobotLogo: React.FC = () => {
       `}</style>
       <div
         ref={containerRef}
-        className="relative w-[480px] h-[480px] flex items-center justify-center"
+        className="relative w-full h-[480px] flex items-center justify-center"
       >
         {/* Ring 1 */}
         <div
